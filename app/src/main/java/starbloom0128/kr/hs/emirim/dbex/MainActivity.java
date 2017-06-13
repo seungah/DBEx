@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText editName, editCount, editResultName, editResultCount;
@@ -36,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
                 sqlDb = myHelper.getWritableDatabase();
                 myHelper.onUpgrade(sqlDb, 1,2);
                 sqlDb.close();
+            }
+        });
+        butInser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sqlDb=myHelper.getWritableDatabase();
+                String sql="insert into idolTable values('"+editName.getText()+"', "+editCount.getText()+")"; //연결시키기 위한것!
+                sqlDb.execSQL(sql);
+                sqlDb.close();
+                Toast.makeText(MainActivity.this, "저장됨", Toast.LENGTH_LONG).show(); //여기까지 저장이 잘 되었음.
             }
         });
     }
