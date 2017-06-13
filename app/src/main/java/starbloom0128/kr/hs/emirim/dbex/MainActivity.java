@@ -1,6 +1,7 @@
 package starbloom0128.kr.hs.emirim.dbex;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +48,18 @@ public class MainActivity extends AppCompatActivity {
                 sqlDb.execSQL(sql);
                 sqlDb.close();
                 Toast.makeText(MainActivity.this, "저장됨", Toast.LENGTH_LONG).show(); //여기까지 저장이 잘 되었음.
+            }
+        });
+        butSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sqlDb=myHelper.getReadableDatabase();
+                String sql="select * from idolTable";
+                Cursor cursor = sqlDb.rawQuery(sql, null);
+                String names = "Idol 이름" + "\r\n"+"=============="+"\r\n";
+                String counts = "Idol 이름" + "\r\n"+"=============="+"\r\n";
+                while (cursor.moveToNext()){
+                }
             }
         });
     }
