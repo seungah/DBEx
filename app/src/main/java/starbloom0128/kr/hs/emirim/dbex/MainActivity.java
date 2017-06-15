@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText editName, editCount, editResultName, editResultCount;
-    Button butInit, butInser, butSelect, butReset;
+    Button butInit, butInsert, butSelect, butUpdate;
     MyDBHelper myHelper;
     SQLiteDatabase sqlDb;
 
@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         editResultName=(EditText)findViewById(R.id.edit_result_name);
         editResultCount=(EditText)findViewById(R.id.edit_result_cnt);
         butInit=(Button)findViewById(R.id.but_init);
-        butInser=(Button)findViewById(R.id.but_insert);
+        butInsert=(Button)findViewById(R.id.but_insert);
         butSelect=(Button)findViewById(R.id.but_select);
-        butReset=(Button)findViewById(R.id.but_reset);
+        butUpdate=(Button)findViewById(R.id.but_update);
 
         //DB생성
         myHelper=new MyDBHelper(this);
@@ -41,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 sqlDb.close();
             }
         });
-        butInser.setOnClickListener(new View.OnClickListener() {
+        butInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sqlDb=myHelper.getWritableDatabase();
-                String sql="insert into idolTable values('"+editName.getText()+"', "+editCount.getText()+")"; //연결시키기 위한것!
+                String sql="insert into idolTable values('"+editName.getText()+"', "+editCount.getText()+")"; //문장을 연결시키기 위한것!
                 sqlDb.execSQL(sql);
                 sqlDb.close();
-                Toast.makeText(MainActivity.this, "저장됨", Toast.LENGTH_LONG).show(); //여기까지 저장이 잘 되었음.
+                Toast.makeText(MainActivity.this, "저장됨", Toast.LENGTH_LONG).show(); //여기까지 저장이 잘 되었음을 의미
             }
         });
         butSelect.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
                 cursor.close();
                 sqlDb.close();
 
+            }
+        });
+        butUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sqlDb=myHelper.getWritableDatabase();
+                String sql="update idolTable set idolCount=editCount=" + editCount.getText() + " where idolName='"+editName.getText()+"'";
+                sqlDb.execSQL(sql);
+                sqlDb.close();
+                Toast.makeText(MainActivity.this, "인원수가 수정됨", Toast.LENGTH_LONG).show(); //여기까지 저장이 잘 되었음을 의미
             }
         });
     }
