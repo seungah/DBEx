@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText editName, editCount, editResultName, editResultCount;
-    Button butInit, butInser, butSelect;
+    Button butInit, butInser, butSelect, butReset;
     MyDBHelper myHelper;
     SQLiteDatabase sqlDb;
 
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         butInit=(Button)findViewById(R.id.but_init);
         butInser=(Button)findViewById(R.id.but_insert);
         butSelect=(Button)findViewById(R.id.but_select);
+        butReset=(Button)findViewById(R.id.but_reset);
 
         //DB생성
         myHelper=new MyDBHelper(this);
@@ -59,7 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 String names = "Idol 이름" + "\r\n"+"=============="+"\r\n";
                 String counts = "Idol 이름" + "\r\n"+"=============="+"\r\n";
                 while (cursor.moveToNext()){
+                    names += cursor.getString(0)+"\r\n";
+                    counts += cursor.getInt(1)+"\r\n"; //연산이 필요할 때 정수형 값 그대로를 쓰기 위해, getInt로 반환받을 수 있음.
                 }
+                editResultName.setText(names);
+                editResultCount.setText(counts);
+                cursor.close();
+                sqlDb.close();
+
             }
         });
     }
@@ -79,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         //이미 idolTable이 존재한다면 기존의 테이블을 삭제하고 새로 테이블 만들 때 호출
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-            String sql="drop table if exist idolTable";
+            String sql="drop table if exists idolTable";
             sqLiteDatabase.execSQL(sql);
             onCreate(sqLiteDatabase);
         }
